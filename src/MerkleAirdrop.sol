@@ -63,7 +63,7 @@ contract MerkleAirdrop {
         }
         hasClaimed[_to] = true;
         emit Claimed(_to, _amount);
-        i_airdrop.safeTransferFrom(msg.sender, _to, _amount);
+        i_airdrop.safeTransfer(_to, _amount);
     }
 
     /*//////////////////////////////////////////////////////////////
