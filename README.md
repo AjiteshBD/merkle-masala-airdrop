@@ -1,6 +1,12 @@
-## Foundry
+# MerkleAirdrop Project
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+![Airdrop](https://media.giphy.com/media/l0Exk8EUzSLsrErEQ/giphy.gif)
+
+## Overview
+
+The `MerkleAirdrop` project allows users to claim Masala tokens if they are part of an allowed list defined by a Merkle tree. This project leverages Merkle proofs and EIP-712 signatures to ensure secure and verified token distribution.
+
+
 
 Foundry consists of:
 
@@ -48,7 +54,7 @@ $ anvil
 ### Deploy
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge script script/MasalaToken.s.sol:MasalaToken --rpc-url <your_rpc_url> --account <your_keystore-account>
 ```
 
 ### Cast
