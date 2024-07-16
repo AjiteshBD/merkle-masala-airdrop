@@ -12,7 +12,7 @@ contract MerkleTest is Test, CodeConstant, ZkSyncChainChecker {
     MasalaToken masalaToken;
     address USER;
     uint256 PRIVATE;
-
+    address GASPAYER;
     bytes32 private FIRST_PROOF = 0x0fd7c981d39bece61f7499702bf59b3114a90e66b51ba2c53abdf7b62986c00a;
     bytes32 private SECOND_PROOF = 0xe5ebd1e1b5a5478a944ecab36a9a954ac3b6b8216875f6524caa7a1d87096576;
     bytes32[] public PROOF = [FIRST_PROOF, SECOND_PROOF];
@@ -28,13 +28,15 @@ contract MerkleTest is Test, CodeConstant, ZkSyncChainChecker {
             masalaToken.transfer(address(merkleAirdrop), MINT_AMOUNT);
         }
         (USER, PRIVATE) = makeAddrAndKey("USER");
+        GASPAYER = makeAddr("GASPAYER");
     }
 
     function testClaim() public {
         uint256 userbalance = masalaToken.balanceOf(USER);
-        console.log(USER);
-        vm.prank(USER);
-        merkleAirdrop.claim(USER, AMOUT_TO_CLAIM, PROOF);
+        bytes32 digest = merkleAirdrop.getMessageHash(USER, AMOUT_TO_CLAIM);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(PRIVATE, digest);
+        vm.prank(GASPAYER);
+        merkleAirdrop.claim(USER, AMOUT_TO_CLAIM, PROOF, v, r, s);
         assertEq(masalaToken.balanceOf(USER), userbalance + AMOUT_TO_CLAIM);
     }
 }
